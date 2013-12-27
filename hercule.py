@@ -13,6 +13,10 @@ class Request:
 		request_string = region + self.version[1] + '/summoner/by-name/' + name 
 		return self.make_request(request_string)['id']
 
+	def get_name_from_id(self, summoner_id, region='na'):
+		request_string = region + self.version[1] + '/summoner/' + str(summoner_id)
+		return self.make_request(request_string)['name']
+
 	def get_summoner_from_name(self, name, region='na'):
 		request_string = region + self.version[1] + '/summoner/by-name/' + name 
 		return self.make_request(request_string)
