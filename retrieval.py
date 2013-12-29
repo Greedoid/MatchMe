@@ -38,7 +38,6 @@ def get_player_object(player_id):
 	obj['name'] = player_name 
 	obj['summoner_id'] = player_id
 	obj['champ_vector'] = set_vector(player_name)
-	obj['last_played'
 	return obj
 
 def get_player_object_from_name(player_name):

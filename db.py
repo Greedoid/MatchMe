@@ -13,6 +13,9 @@ class DB:
 
 	def list_all(self):
 		return self.db.collection_names()
+	
+	def get_all_players(self):
+		return self.players.find()
 
 	def get_player_by_name(self, name):
 		return self.players.find_one({"name": name})
