@@ -17,8 +17,11 @@ class DB:
 	def get_all_players(self):
 		return self.players.find()
 
-	def get_player_by_name(self, name):
+	def get_player_from_name(self, name):
 		return self.players.find_one({"name": name})
 
-	def get_player_by_id(self, summoner_id):
+	def get_player_from_id(self, summoner_id):
 		return self.players.find_one({"id": summoner_id})
+
+	def get_players_from_league(self, league):
+		return self.players.find({"league": league})

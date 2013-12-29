@@ -1,23 +1,6 @@
 from hercule import Request
 from config import api_key
 
-
-def get_rel_info(player_name):
-        r = Request(api_key)
-        obj = {}
-        player_id = r.get_id_from_name(player_name)
-        leagueinfo = r.get_leagues_from_id(player_id)
-        obj['name'] = player_name
-        obj['summoner_id'] = player_id
-        obj['league'] = leagueinfo
-        stat_summary = r.get_stats_summary_from_id(player_id, 'na', 'SEASON3')
-        obj['stats'] = stat_summary
-        ranked_summary = r.get_ranked_summary_from_id(player_id, 'na', 'SEASON3')
-        obj['ranked'] = ranked_summary
-        games = r.get_recent_games_from_id(player_id)
-        obj['games'] = games
-        return obj 
-
 def get_played_champs_in_order(ranked_obj):
         champs = []
         for item in ranked_obj['champions']:
@@ -38,13 +21,19 @@ def get_player_object(player_id):
 	obj['name'] = player_name 
 	obj['summoner_id'] = player_id
 	obj['champ_vector'] = set_vector(player_name)
+	obj['tier'], obj['rank'] = get_rank_and_tier_from_id(player_id)
 	return obj
+
+def get_rank_and_tier_from_id(player_id):
+	r = Request(api_key)
+	for item in r.get_leagues_from_id(player_id)[str(player_id)]['entries']:
+		if item['playerOrTeamId'] == str(player_id):
+			return item['tier'], item['rank']
+	
 
 def get_player_object_from_name(player_name):
 	player_id = Request(api_key).get_id_from_name(player_name)
-	print 'Player ID = ' + str(player_id)
 	return get_player_object(player_id)
-
 
 def get_played_champs_in_order_from_name(player_name):
         r = Request(api_key)
@@ -69,8 +58,5 @@ def init_vector():
 		champs[item['name']] = 0
 	return champs
 
-
-if (__name__ == "__main__"):
-        for item in get_played_champs_in_order_by_name('Scarra'):
-                print item
-
+if __name__ == '__main__':
+	print get_rank_and_tier_from_id(26483194)
