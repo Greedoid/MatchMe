@@ -22,7 +22,11 @@ def get_player_object(player_id):
 	obj['summoner_id'] = player_id
 	obj['champ_vector'] = set_vector(player_name)
 	obj['tier'], obj['rank'] = get_rank_and_tier_from_id(player_id)
+	obj['avg_neutrals'] = average_neutrals_killed(player_id)
 	return obj
+
+def check_if_rank(player_obj, rank):
+	return player_obj['tier'] == rank
 
 def get_rank_and_tier_from_id(player_id):
 	r = Request(api_key)
@@ -30,6 +34,15 @@ def get_rank_and_tier_from_id(player_id):
 		if item['playerOrTeamId'] == str(player_id):
 			return item['tier'], item['rank']
 	
+def average_neutrals_killed(player_id):
+	r = Request(api_key)
+	stats = r.get_stats_summary_from_id(player_id, 'na', 'SEASON3')
+	for item in stats['playerStatSummaries']:
+		if item['playerStatSummaryType'] == 'RankedSolo5x5':
+			total = item['wins'] + item['losses']
+			num_creeps = item['aggregatedStats']['totalNeutralMinionsKilled']
+	return float(num_creeps)/float(total)
+
 
 def get_player_object_from_name(player_name):
 	player_id = Request(api_key).get_id_from_name(player_name)
@@ -59,4 +72,4 @@ def init_vector():
 	return champs
 
 if __name__ == '__main__':
-	print get_rank_and_tier_from_id(26483194)
+	print average_neutrals_killed(26483194)

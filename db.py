@@ -7,7 +7,7 @@ class DB:
 		self.db = self.client.player_database
 		self.players = self.db.players
 
-	def insert(self, player_obj):
+	def insert(self, player_obj): # TODO: Account for duplicate entries
 		player_id = self.players.insert(player_obj)
 		return player_id
 

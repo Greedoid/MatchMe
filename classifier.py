@@ -1,4 +1,5 @@
 from db import DB
+import sys
 import math
 from retrieval import init_vector
 
@@ -18,6 +19,7 @@ class Classifier:
 				sublist.append(item)
 		for player in sublist:
 			print 'Distance from ' + player['name'] + ': ' + str(self.euclidean_distance(prime_vector, player['champ_vector']))
+	
 
 	def euclidean_distance(self, vec1, vec2):
 		total = 0
@@ -27,7 +29,7 @@ class Classifier:
 
 if __name__ == '__main__':
 	classy = Classifier()
-	classy.get_distances(22802244)
+	classy.get_distances(20386296)
 
 
 
